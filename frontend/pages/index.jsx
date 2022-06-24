@@ -1,10 +1,24 @@
+import { motion } from "framer-motion";
+import { useEffect, useState, memo } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
+import axios from "axios";
+import moment from "moment";
 
 
 const Home = () => {
 
-    const test = [1, 2, 3, 4, 5];
+    const [post, setPost] = useState([]);
+
     const test2 = [1, 2, 3, 4];
+
+    useEffect(() => {
+
+        axios.get("http://localhost:1337/api/posts").then(res => setPost(res.data.data));
+
+    }, []);
+
+    const router = useRouter();
 
     return (
 
@@ -20,7 +34,7 @@ const Home = () => {
                 <h1 className="font-extrabold text-white text-9xl">THE BLOG</h1>
             </header>
 
-            <article className="cursor-pointer rounded-md p-6 hover:bg-gray-100 grid grid-cols-6 my-14">
+            <motion.article whileTap={{scale: 0.9}} className="cursor-pointer rounded-md p-6 hover:bg-gray-100 grid grid-cols-6 my-14">
                 <img className="col-span-3 rounded-md w-full" src="https://via.placeholder.com/1080x720" alt="" />
 
                 <div className="col-span-3 px-10 my-auto">
@@ -28,7 +42,7 @@ const Home = () => {
                     <h2 className="text-black font-bold my-2 text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
                     <p className="text-gray-500 font-regular text-base">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero consequatur eius amet ipsa accusantium voluptas, sapiente omnis cumque fugiat iure quam expedita tempore hic eaque praesentium nulla ipsum assumenda officiis?</p>
                 </div>
-            </article>
+            </motion.article>
 
             <section>
 
@@ -36,16 +50,16 @@ const Home = () => {
 
                 <div className="mt-6 space-y-4">
 
-                    {test.map(item =>
+                    {post.map((item, key) =>
 
-                        <div key={item} className="rounded-md hover:bg-gray-100 cursor-pointer flex p-2">
+                        <motion.div whileTap={{scale: 0.9}} onClick={() => router.push(`/${item.id}`)} key={key} className="rounded-md hover:bg-gray-100 cursor-pointer flex p-2">
                             <img className="rounded-md w-14" src="https://via.placeholder.com/150" alt="" />
 
                             <div className="ml-4">
-                                <h2 className="font-medium text-black text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
-                                <p className="text-gray-400 text-sm">january 15, 2020</p>
+                                <h2 className="font-medium text-black text-base">{item.attributes.title}</h2>
+                                <p className="text-gray-400 text-sm">{moment(item.attributes.createdAt).format('LL')}</p>
                             </div>
-                        </div>
+                        </motion.div>
 
                     )}
 
@@ -61,7 +75,7 @@ const Home = () => {
 
                     {test2.map(item =>
 
-                        <div key={item} className="rounded-md space-y-4 hover:bg-gray-100 cursor-pointer flex flex-col p-2">
+                        <motion.div whileTap={{scale: 0.9}} onClick={() => router.push(`/${item.id}`)} key={item} className="rounded-md space-y-4 hover:bg-gray-100 cursor-pointer flex flex-col p-2">
 
                             <img className="rounded-md mx-auto" src="https://via.placeholder.com/1080x720" alt="" />
 
@@ -69,7 +83,7 @@ const Home = () => {
                             <h2 className="font-medium text-black text-lg">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
                             <p className="text-gray-400 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni quod quos beatae iure praesentium natus ratione quaerat ut, sequi a expedita neque maiores et officia? Odio laborum cum molestiae sed?</p>
 
-                        </div>
+                        </motion.div>
 
                     )}
 
@@ -83,17 +97,17 @@ const Home = () => {
 
                 <div className="mt-6 flex flex-col space-y-4">
 
-                    {test.map(item =>
+                    {post.map(item =>
 
-                        <div key={item} className="rounded-md hover:bg-gray-100 cursor-pointer flex p-2">
+                        <motion.div whileTap={{scale: 0.9}} onClick={() => router.push(`/${item.id}`)} key={item} className="rounded-md hover:bg-gray-100 cursor-pointer flex p-2">
                             <img className="rounded-md w-1/4" src="https://via.placeholder.com/1080x720" alt="" />
 
                             <div className="ml-4  space-y-1">
-                                <span className="text-gray-400 text-sm">january 15, 2020</span>
-                                <h2 className="font-medium text-black text-lg">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
-                                <p className="text-gray-400 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni quod quos beatae iure praesentium natus ratione quaerat ut, sequi a expedita neque maiores et officia? Odio laborum cum molestiae sed? Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae voluptates ex vel accusamus. Dolores asperiores hic possimus facere error repudiandae vitae, cum perferendis, sit, accusantium ullam quas quia numquam adipisci?</p>
+                                <span className="text-gray-400 text-sm">{moment(item.attributes.createdAt).format('LL')}</span>
+                                <h2 className="font-medium text-black text-lg">{item.attributes.title}</h2>
+                                <p className="text-gray-400 text-sm">{item.attributes.description}</p>
                             </div>
-                        </div>
+                        </motion.div>
 
                     )}
 
@@ -108,4 +122,4 @@ const Home = () => {
 }
 
 
-export default Home;
+export default memo(Home);

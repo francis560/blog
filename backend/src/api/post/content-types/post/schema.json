@@ -4,7 +4,8 @@
   "info": {
     "singularName": "post",
     "pluralName": "posts",
-    "displayName": "post"
+    "displayName": "post",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -14,8 +15,11 @@
     "title": {
       "type": "string"
     },
-    "create_date": {
-      "type": "date"
+    "content": {
+      "type": "richtext"
+    },
+    "description": {
+      "type": "text"
     }
   }
 }
