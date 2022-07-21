@@ -1,6 +1,5 @@
 import { useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
-import MarkdownIt from "markdown-it";
 import Head from "next/head";
 import moment from "moment";
 import axios from "axios";
@@ -11,23 +10,53 @@ const Article = () => {
 
     const router = useRouter();
 
-    const md = new MarkdownIt({html: true});
-
     const { id } = router.query;
     
+    const [loading, setLoading] = useState(true);
+    const [content, setContent] = useState({});
     const [post, setPost] = useState({attributes: {}});
     
     useEffect(() => {
         
-        axios.get(`http://localhost:1337/api/posts/${id}`).then(res => setPost(res.data.data));
+        axios.get(`http://localhost:1337/api/posts/${id}`).then(({data}) => {
+            setPost(data.data);
+            setContent(JSON.parse(data.data.attributes.content));
+            setLoading(false);
+        });
         
     }, []);
+    
+    const returnContent = (item, key) => {
 
-    var htmlContent;
+        if (item.type === "header") {
+            return (
+                <h1 className="font-bold text-slate-900 text-3xl">{item.data.text}</h1>
+            )
+        }
 
-    if (post.attributes.content) {
-        htmlContent = md.render(post.attributes.content);
-    }
+        if (item.type === "paragraph") {
+            return (
+                <p className="font-regular text-slate-500 text-base">{item.data.text}</p>
+            )
+        }
+
+        if (item.type === "image") {
+            return (
+                <img className="" src={`http://localhost:1337${item.data.file.url}`} />
+            )
+        }
+
+        if (item.type === "list") {
+            return (
+                <ul className="p-4">
+                    {item.data.items.map((items, key) => 
+                        <li className="font-regular text-slate-500 list-disc text-base">{items}</li>
+                    )}
+                </ul>
+            )
+        }
+
+    } 
 
     return (
 
@@ -42,13 +71,25 @@ const Article = () => {
 
             <Hero />
 
-            <div className="px-28 my-14">
-                <span className="text-gray-400 font-regular text-sm mb-2">{moment(post.attributes.createdAt).format('LL')}</span>
-                <h1 className="text-slate-900 font-bold text-2xl">{post.attributes.title}</h1>
+            {
+                loading ?
+                <p>Cargando...</p>
+                :
+                <div className="px-28 my-14">
+                    <span className="text-slate-400 font-regular text-sm mb-2">{moment(post.attributes.createdAt).format('LL')}</span>
 
-                <section className="space-y-6 mt-20" dangerouslySetInnerHTML={{__html: htmlContent}}></section>
-            </div>
+                    <section className="space-y-6">
 
+                        {
+                            content.blocks.map((item, key) => 
+                                returnContent(item, key)
+                            )
+                        }
+
+                    </section>
+
+                </div>
+            }
 
         </div>
 
