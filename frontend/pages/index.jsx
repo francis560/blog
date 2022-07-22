@@ -35,16 +35,16 @@ const Home = () => {
             <Hero />
 
             <div className="flex flex-row space-x-4 mt-6 px-4">
-                <motion.button whileTap={{scale: 0.9}} className="px-4 py-1 rounded-md border-2 border-black hover:bg-slate-50 font-medium">Technology</motion.button>
+                <motion.button whileTap={{ scale: 0.9 }} className="px-4 py-1 rounded-md border-2 border-black hover:bg-slate-50 font-medium">Technology</motion.button>
             </div>
 
-            <motion.article whileTap={{scale: 0.9}} className="cursor-pointer rounded-md p-6 hover:bg-slate-100 grid grid-cols-6 my-14">
+            <motion.article whileTap={{ scale: 0.9 }} className="cursor-pointer rounded-md p-6 hover:bg-slate-100 grid grid-cols-6 my-14">
                 <img className="col-span-3 rounded-md w-full" src="https://via.placeholder.com/1080x720" alt="" />
 
                 <div className="col-span-3 px-10 my-auto">
-                    <span className="text-slate-400 font-regular text-sm">january 15, 2020</span>
-                    <h2 className="text-slate-900 font-bold my-2 text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
-                    <p className="text-slate-500 font-regular text-base">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero consequatur eius amet ipsa accusantium voluptas, sapiente omnis cumque fugiat iure quam expedita tempore hic eaque praesentium nulla ipsum assumenda officiis?</p>
+                    <span className="text-slate-400 font-regular text-sm">{moment(post[0]?.attributes.publishedAt).format('LL')}</span>
+                    <h2 className="text-slate-900 font-bold my-2 text-xl">{post[0]?.attributes.title}</h2>
+                    <p className="text-slate-500 font-regular text-base">{post[0]?.attributes.description}</p>
                 </div>
             </motion.article>
 
@@ -56,12 +56,14 @@ const Home = () => {
 
                     {post.map((item, key) =>
 
-                        <motion.div whileTap={{scale: 0.9}} onClick={() => router.push(`/${item.id}`)} key={key} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
+                        moment(item.attributes.publishedAt).format("YYYY") - moment().format("YYYY") === 0 && moment(item.attributes.publishedAt).format("MMMM") === moment().format("MMMM") &&
+
+                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
                             <img className="rounded-md w-14" src="https://via.placeholder.com/150" alt="" />
 
                             <div className="ml-4">
                                 <h2 className="font-medium text-slate-900 text-base">{item.attributes.title}</h2>
-                                <p className="text-slate-400 text-sm">{moment(item.attributes.createdAt).format('LL')}</p>
+                                <p className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</p>
                             </div>
                         </motion.div>
 
@@ -77,9 +79,9 @@ const Home = () => {
 
                 <div className="mt-6 grid grid-cols-4 gap-2">
 
-                    {test2.map(item =>
+                    {test2.map((item, key) =>
 
-                        <motion.div whileTap={{scale: 0.9}} onClick={() => router.push(`/${item.id}`)} key={item} className="rounded-md space-y-4 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
+                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/${item.id}`)} className="rounded-md space-y-4 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
 
                             <img className="rounded-md mx-auto" src="https://via.placeholder.com/1080x720" alt="" />
 
@@ -101,13 +103,13 @@ const Home = () => {
 
                 <div className="mt-6 flex flex-col space-y-4">
 
-                    {post.map(item =>
+                    {post.map((item, key) =>
 
-                        <motion.div whileTap={{scale: 0.9}} onClick={() => router.push(`/${item.id}`)} key={item} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
+                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
                             <img className="rounded-md w-1/4" src="https://via.placeholder.com/1080x720" alt="" />
 
                             <div className="ml-4  space-y-1">
-                                <span className="text-slate-400 text-sm">{moment(item.attributes.createdAt).format('LL')}</span>
+                                <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
                                 <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
                                 <p className="text-slate-400 text-sm">{item.attributes.description}</p>
                             </div>
