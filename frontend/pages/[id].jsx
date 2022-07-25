@@ -24,7 +24,7 @@ const Article = () => {
             setLoading(false);
         });
 
-    }, []);
+    }, [id]);
 
     const returnContent = (item, key) => {
 
@@ -137,7 +137,7 @@ const Article = () => {
                 <p>Cargando...</p>
                     :
                     <div className="px-28 my-14">
-                        <button onClick={() => router.back()} className="font-regular mb-4 text-slate-400 text-sm hover:text-slate-300 flex items-center"><i className="fi fi-rr-arrow-small-left mr-2 inline-flex"></i>Regresar</button>
+                        <button onClick={() => router.push("/")} className="font-regular mb-4 text-slate-400 text-sm hover:text-slate-300 flex items-center"><i className="fi fi-rr-arrow-small-left mr-2 inline-flex"></i>Regresar</button>
                         <span className="text-slate-400 font-regular text-sm mb-2">{moment(post.attributes.publishedAt).format('LL')}</span>
 
                         <section className="space-y-6">
