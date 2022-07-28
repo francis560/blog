@@ -15,7 +15,7 @@ const Home = () => {
 
     useEffect(() => {
 
-        axios.get("http://localhost:1337/api/posts").then(res => setPost(res.data.data));
+        axios.get("http://localhost:1337/api/posts?populate=*").then(res => setPost(res.data.data));
 
     }, []);
 
@@ -39,7 +39,7 @@ const Home = () => {
             </div>
 
             <motion.article whileTap={{ scale: 0.9 }} className="cursor-pointer rounded-md p-6 hover:bg-slate-100 grid grid-cols-6 my-14">
-                <img className="col-span-3 rounded-md w-full" src="https://via.placeholder.com/1080x720" alt="" />
+                <img className="col-span-3 rounded-md w-96" src={post[0]?.attributes?.cover.data.attributes.url} alt="" />
 
                 <div className="col-span-3 px-10 my-auto">
                     <span className="text-slate-400 font-regular text-sm">{moment(post[0]?.attributes.publishedAt).format('LL')}</span>
@@ -59,7 +59,7 @@ const Home = () => {
                         moment(item.attributes.publishedAt).format("YYYY") - moment().format("YYYY") === 0 && moment(item.attributes.publishedAt).format("MMMM") === moment().format("MMMM") &&
 
                         <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                            <img className="rounded-md w-14" src="https://via.placeholder.com/150" alt="" />
+                            <img className="rounded-md w-14" src={item.attributes.cover?.data.attributes.url} alt="" />
 
                             <div className="ml-4">
                                 <h2 className="font-medium text-slate-900 text-base">{item.attributes.title}</h2>
@@ -106,7 +106,7 @@ const Home = () => {
                     {post.map((item, key) =>
 
                         <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                            <img className="rounded-md w-1/4" src="https://via.placeholder.com/1080x720" alt="" />
+                            <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
 
                             <div className="ml-4  space-y-1">
                                 <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>

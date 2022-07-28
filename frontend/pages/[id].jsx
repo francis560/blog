@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import moment from "moment";
 import axios from "axios";
+
+
 import Hero from "../components/hero";
+import PostLoading from "../components/loadings/post";
 
 
 const Article = () => {
@@ -42,7 +45,7 @@ const Article = () => {
 
         if (item.type === "image") {
             return (
-                <img className="rounded-md" src={`http://localhost:1337${item.data.file.url}`} />
+                <img className="rounded-md" src={item.data.file.url} />
             )
         }
 
@@ -134,7 +137,7 @@ const Article = () => {
 
             {
                 loading ?
-                <p>Cargando...</p>
+                <PostLoading />
                     :
                     <div className="px-28 my-14">
                         <button onClick={() => router.push("/")} className="font-regular mb-4 text-slate-400 text-sm hover:text-slate-300 flex items-center"><i className="fi fi-rr-arrow-small-left mr-2 inline-flex"></i>Regresar</button>

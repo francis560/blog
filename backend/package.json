@@ -14,6 +14,7 @@
     "@mattie-bundle/strapi-provider-search-algolia": "^1.0.0-alpha.3",
     "@strapi/plugin-i18n": "4.2.0",
     "@strapi/plugin-users-permissions": "4.2.0",
+    "@strapi/provider-upload-cloudinary": "^4.3.0",
     "@strapi/strapi": "4.2.0",
     "better-sqlite3": "7.4.6",
     "strapi-plugin-react-editorjs": "^2.0.1"
