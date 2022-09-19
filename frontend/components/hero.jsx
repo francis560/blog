@@ -25,7 +25,7 @@ const Hero = () => {
             return setShowAutoComplete(false)
         } 
 
-        await index.search(val, { hitsPerPage: 4, highlightPreTag: ' ', highlightPostTag: ' ' }).then(({ hits }) => {
+        await index.search(val, { hitsPerPage: 3, highlightPreTag: ' ', highlightPostTag: ' ' }).then(({ hits }) => {
 
             const results = hits.map(hit => {
 
@@ -51,7 +51,7 @@ const Hero = () => {
 
     return (
 
-        <header className="bg-black p-10 rounded-b-md">
+        <header className="bg-slate-900 p-10 rounded-b-md">
             <nav className="flex justify-between">
                 {/* <img src="" alt="" /> */}
                 <p className="font-extrabold text-white">Logo</p>
@@ -72,7 +72,7 @@ const Hero = () => {
                             <motion.button onClick={() => {
                                 setShowAutoComplete(false)
                                 setSelectedId(null)
-                            }} className="flex items-center justify-center cursor-pointer"><i className="fi fi-rr-cross inline-flex text-base text-white"></i></motion.button>
+                            }} className="flex items-center justify-center cursor-pointer"><i className="fi fi-rr-cross inline-flex text-base text-white hover:text-red-400"></i></motion.button>
                         </motion.div>
 
                         <div className="space-y-4 w-1/2">
@@ -80,16 +80,16 @@ const Hero = () => {
                                 showAutoComplete &&
 
                                 autoComplete.map((item, key) =>
-                                    <motion.div whileTap={{ scale: 0.9 }} className="flex flex-row cursor-pointer rounded-md w-full bg-white p-4" key={key} onClick={() => {
+                                    <motion.div whileTap={{ scale: 0.9 }} className="flex flex-row cursor-pointer rounded-md w-full bg-white p-2" key={key} onClick={() => {
                                         setShowAutoComplete(false)
                                         setSelectedId(null)
-                                        router.push(`/${item.key}`)
+                                        router.push(`/article/${item.key}`)
                                     }}>
-                                        <img className="rounded-md w-20" src={"http://localhost:1337" + item?.cover?.url.value} alt="" />
+                                        <img className="rounded-md w-32" src={" https://res.cloudinary.com/dqvcp9dby/image/upload/v1663599795/" + item?.cover?.hash.value} alt="" />
 
-                                        <div className="ml-4">
+                                        <div className="ml-4 my-auto">
                                             <p className="text-slate-900 font-bold text-base">{item.title}</p>
-                                            <p className="text-slate-400 font-normal text-sm">{item.description}</p>
+                                            {/* <p className="text-slate-400 font-normal text-sm">{item.description}</p> */}
                                         </div>
                                     </motion.div>
                                 )
