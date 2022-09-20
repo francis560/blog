@@ -51,7 +51,7 @@ const Hero = () => {
 
     return (
 
-        <header className="bg-slate-900 p-10 rounded-b-md">
+        <header className="bg-slate-900 px-10 py-4 mt-6 rounded-md">
             <nav className="flex justify-between">
                 {/* <img src="" alt="" /> */}
                 <p className="font-extrabold text-white">Logo</p>

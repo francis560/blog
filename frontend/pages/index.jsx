@@ -7,6 +7,7 @@ import moment from "moment";
 
 
 import Hero from "../components/hero";
+import NewSletter from "../components/newsletter";
 import Footer from "../components/footer";
 
 
@@ -119,7 +120,7 @@ const Home = () => {
                         <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
                             <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                            <div className="ml-4  space-y-1">
+                            <div className="ml-4 space-y-1">
                                 <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
                                 <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
                                 <p className="text-slate-400 text-sm">{item.attributes.description}</p>
@@ -131,6 +132,8 @@ const Home = () => {
                 </div>
 
             </section>
+
+            <NewSletter />
 
             <Footer />
 
