@@ -8,6 +8,9 @@ import moment from "moment";
 
 import Hero from "../components/hero";
 import NewSletter from "../components/newsletter";
+import HeroLoading from "../components/loadings/heroLoading";
+import LatestArticles from "../components/loadings/latestArticles";
+import MoreArticles from "../components/loadings/moreArticles";
 import Footer from "../components/footer";
 
 
@@ -18,18 +21,28 @@ const Home = () => {
     const [editorPick, setEditorPick] = useState([]);
     const [morePost, setMorePost] = useState([]);
 
-    const test2 = [1, 2, 3, 4];
+    const [loading, setLoading] = useState(true);
+    const [loading2, setLoading2] = useState(true);
+    const [loading3, setLoading3] = useState(true);
 
     useEffect(() => {
 
         axios.get("http://localhost:1337/api/posts?sort[0]=title&sort[1]=description&populate=*&pagination[page]=1&pagination[pageSize]=6").then(res => {
             setOnePost(res.data.data[0]);
             setLatestPost(res.data.data);
+            setLoading(false);
         });
 
+        axios.get("http://localhost:1337/api/posts?filters[editorPick][$eq]=true&sort[0]=title&sort[1]=description&populate=*").then(res => {
+            setEditorPick(res.data.data);
+            console.log(res.data.data)
+            setLoading2(false);
+        });
 
-
-        axios.get("http://localhost:1337/api/posts?sort[0]=title&sort[1]=description&populate=*&pagination[pageSize]=7").then(res => setMorePost(res.data.data));
+        axios.get("http://localhost:1337/api/posts?sort[0]=title&sort[1]=description&populate=*&pagination[pageSize]=7").then(res => {
+            setMorePost(res.data.data);
+            setLoading3(false);
+        });
 
     }, []);
 
@@ -48,40 +61,46 @@ const Home = () => {
 
             <Hero />
 
-            {/* <div className="flex flex-row space-x-4 mt-6 px-4">
-                <motion.button whileTap={{ scale: 0.9 }} className="px-4 py-1 rounded-md border-2 border-black hover:bg-slate-50 font-medium">Technology</motion.button>
-            </div> */}
+            {
+                loading ?
+                    <HeroLoading />
+                    :
+                    <motion.article whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 grid grid-cols-6 my-14">
+                        <img className="col-span-3 rounded-md w-96" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
 
-            <motion.article whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 grid grid-cols-6 my-14">
-                <img className="col-span-3 rounded-md w-96" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
-
-                <div className="col-span-3 px-10 my-auto">
-                    <span className="text-slate-400 font-regular text-sm">{moment(onePost?.attributes?.publishedAt).format('LL')}</span>
-                    <h2 className="text-slate-900 font-bold my-2 text-xl">{onePost?.attributes?.title}</h2>
-                    <p className="text-slate-500 font-regular text-base">{onePost?.attributes?.description}</p>
-                </div>
-            </motion.article>
+                        <div className="col-span-3 px-10 my-auto">
+                            <span className="text-slate-400 font-regular text-sm">{moment(onePost?.attributes?.publishedAt).format('LL')}</span>
+                            <h2 className="text-slate-900 font-bold my-2 text-xl">{onePost?.attributes?.title}</h2>
+                            <p className="text-slate-500 font-regular text-base">{onePost?.attributes?.description}</p>
+                        </div>
+                    </motion.article>
+            }
 
             <section>
 
                 <p className="text-slate-900 font-bold text-base">Latest articles</p>
 
-                <div className="mt-6 space-y-4">
+                {
+                    loading ?
+                        <LatestArticles />
+                        :
+                        <div className="mt-6 space-y-4">
 
-                    {latestPost.map((item, key) =>
+                            {latestPost.map((item, key) =>
 
-                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                            <img className="rounded-md w-14" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
+                                    <img className="rounded-md w-14" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                            <div className="ml-4">
-                                <h2 className="font-medium text-slate-900 text-base">{item.attributes.title}</h2>
-                                <p className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</p>
-                            </div>
-                        </motion.div>
+                                    <div className="ml-4">
+                                        <h2 className="font-medium text-slate-900 text-base">{item.attributes.title}</h2>
+                                        <p className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</p>
+                                    </div>
+                                </motion.div>
 
-                    )}
+                            )}
 
-                </div>
+                        </div>
+                }
 
             </section>
 
@@ -89,23 +108,28 @@ const Home = () => {
 
                 <p className="text-slate-900 font-bold text-base">Editor's Pick</p>
 
-                <div className="mt-6 grid grid-cols-4 gap-2">
+                {
+                    loading2 ?
+                    <p>hola</p>
+                    :
+                    <div className="mt-6 grid grid-cols-4 gap-2">
+                        
+                        {editorPick.map((item, key) =>
 
-                    {test2.map((item, key) =>
+                            <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md space-y-4 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
 
-                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md space-y-4 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
+                                <img className="rounded-md mx-auto" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                            <img className="rounded-md mx-auto" src="https://via.placeholder.com/1080x720" alt="" />
+                                <span className="text-slate-400 text-xs">{moment(item.attributes.publishedAt).format('LL')}</span>
+                                <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
+                                <p className="text-slate-400 text-sm">{item.attributes.description}</p>
 
-                            <span className="text-slate-400 text-xs">january 15, 2020</span>
-                            <h2 className="font-medium text-slate-900 text-lg">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
-                            <p className="text-slate-400 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni quod quos beatae iure praesentium natus ratione quaerat ut, sequi a expedita neque maiores et officia? Odio laborum cum molestiae sed?</p>
+                            </motion.div>
 
-                        </motion.div>
+                        )}
 
-                    )}
-
-                </div>
+                    </div>
+                }
 
             </section>
 
@@ -113,23 +137,28 @@ const Home = () => {
 
                 <p className="text-slate-900 font-bold text-base">More articles</p>
 
-                <div className="mt-6 flex flex-col space-y-4">
+                {
+                    loading3 ?
+                        <MoreArticles />
+                        :
+                        <div className="mt-6 flex flex-col space-y-4">
 
-                    {morePost.map((item, key) =>
+                            {morePost.map((item, key) =>
 
-                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                            <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
+                                    <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                            <div className="ml-4 space-y-1">
-                                <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
-                                <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
-                                <p className="text-slate-400 text-sm">{item.attributes.description}</p>
-                            </div>
-                        </motion.div>
+                                    <div className="ml-4 space-y-1">
+                                        <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
+                                        <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
+                                        <p className="text-slate-400 text-sm">{item.attributes.description}</p>
+                                    </div>
+                                </motion.div>
 
-                    )}
+                            )}
 
-                </div>
+                        </div>
+                }
 
             </section>
 

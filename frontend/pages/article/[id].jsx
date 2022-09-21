@@ -10,6 +10,7 @@ import Hero from "../../components/hero";
 import NewSletter from "../../components/newsletter";
 import Footer from "../../components/footer";
 import PostLoading from "../../components/loadings/post";
+import MoreArticles from "../../components/loadings/moreArticles";
 
 
 const Article = () => {
@@ -19,6 +20,8 @@ const Article = () => {
     const { id } = router.query;
 
     const [loading, setLoading] = useState(true);
+    const [loading2, setLoading2] = useState(true);
+
     const [content, setContent] = useState({});
     const [post, setPost] = useState({ attributes: {} });
     const [morePost, setMorePost] = useState([]);
@@ -31,7 +34,10 @@ const Article = () => {
             setLoading(false);
         });
 
-        axios.get("http://localhost:1337/api/posts?sort[0]=title&sort[1]=description&populate=*&pagination[pageSize]=7").then(res => setMorePost(res.data.data));
+        axios.get("http://localhost:1337/api/posts?sort[0]=title&sort[1]=description&populate=*&pagination[pageSize]=7").then(res => {
+            setMorePost(res.data.data);
+            setLoading2(false);
+        });
 
     }, [id]);
 
@@ -165,23 +171,28 @@ const Article = () => {
 
                 <p className="text-slate-900 font-bold text-base">More articles</p>
 
-                <div className="mt-6 flex flex-col space-y-4">
+                {
+                    loading2 ?
+                        <MoreArticles />
+                        :
+                        <div className="mt-6 flex flex-col space-y-4">
 
-                    {morePost.map((item, key) =>
+                            {morePost.map((item, key) =>
 
-                        <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                            <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
+                                    <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                            <div className="ml-4  space-y-1">
-                                <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
-                                <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
-                                <p className="text-slate-400 text-sm">{item.attributes.description}</p>
-                            </div>
-                        </motion.div>
+                                    <div className="ml-4  space-y-1">
+                                        <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
+                                        <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
+                                        <p className="text-slate-400 text-sm">{item.attributes.description}</p>
+                                    </div>
+                                </motion.div>
 
-                    )}
+                            )}
 
-                </div>
+                        </div>
+                }
 
             </section>
 
