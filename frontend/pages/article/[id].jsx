@@ -167,7 +167,7 @@ const Article = () => {
                     </div>
             }
 
-            {/* <section className="my-14">
+            <section className="my-14">
 
                 <p className="text-slate-900 font-bold text-base">More articles</p>
 
@@ -175,17 +175,17 @@ const Article = () => {
                     loading2 ?
                         <MoreArticles />
                         :
-                        <div className="mt-6 flex flex-col space-y-4">
+                        <div className="mt-6 flex flex-col space-y-8 md:space-y-4">
 
                             {morePost.map((item, key) =>
 
-                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                                    <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex flex-col md:flex-row md:p-2">
+                                    <img className="rounded-md w-full md:w-40 h-40 object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                                    <div className="ml-4  space-y-1">
+                                    <div className="md:ml-4 space-y-1">
                                         <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
                                         <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
-                                        <p className="text-slate-400 text-sm">{item.attributes.description}</p>
+                                        <p className="text-slate-400 text-sm line-clamp-3">{item.attributes.description}</p>
                                     </div>
                                 </motion.div>
 
@@ -194,7 +194,7 @@ const Article = () => {
                         </div>
                 }
 
-            </section> */}
+            </section>
 
             <NewSletter />
 

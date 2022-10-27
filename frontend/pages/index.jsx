@@ -1,12 +1,15 @@
 import { useEffect, useState, memo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import Slider from "react-slick";
 import Head from "next/head";
 import axios from "axios";
 import moment from "moment";
 
 
 import Hero from "../components/hero";
+import NextArrow1 from "../components/arrows/nextArrow";
+import PrevArrow1 from "../components/arrows/prevArrow";
 import NewSletter from "../components/newsletter";
 import HeroLoading from "../components/loadings/heroLoading";
 import LatestArticles from "../components/loadings/latestArticles";
@@ -47,6 +50,43 @@ const Home = () => {
 
     const router = useRouter();
 
+    var settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        initialSlide: 4,
+        nextArrow: <p>dale</p>,
+        prevArrow: <p>dale2</p>,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              initialSlide: 3
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              initialSlide: 2
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              initialSlide: 1
+            }
+          }
+        ]
+    };
+
     return (
 
         <div className="px-4 md:px-12 lg:px-24">
@@ -64,7 +104,7 @@ const Home = () => {
                 loading ?
                     <HeroLoading />
                     :
-                    <motion.article whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 md:grid md:grid-cols-6 my-14">
+                    <motion.article key={onePost.id} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 md:grid md:grid-cols-6 my-14">
                         <img className="md:col-span-3 rounded-md w-96 object-cover" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
 
                         <div className="md:col-span-3 md:px-10 my-auto">
@@ -91,7 +131,7 @@ const Home = () => {
                                     <img className="rounded-md w-14 h-14 object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
 
                                     <div className="ml-4">
-                                        <h2 className="font-medium text-slate-900 text-base">{item.attributes.title}</h2>
+                                        <h2 className="font-medium text-slate-900 text-base line-clamp-2 md:line-clamp-0">{item.attributes.title}</h2>
                                         <p className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</p>
                                     </div>
                                 </motion.div>
@@ -111,21 +151,25 @@ const Home = () => {
                     loading2 ?
                     <p>hola</p>
                     :
-                    <div className="mt-6 grid grid-cols-4 gap-2">
+                    <div className="mt-6">
                         
-                        {editorPick.map((item, key) =>
+                        <Slider {...settings}>
 
-                            <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md space-y-4 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
+                            {editorPick.map((item, key) =>
 
-                                <img className="rounded-md mx-auto object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md space-y-2 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
 
-                                <span className="text-slate-400 text-xs">{moment(item.attributes.publishedAt).format('LL')}</span>
-                                <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
-                                <p className="text-slate-400 text-sm">{item.attributes.description}</p>
+                                    <img className="rounded-md mx-auto w-72 h-48 object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                            </motion.div>
+                                    <span className="text-slate-400 text-xs">{moment(item.attributes.publishedAt).format('LL')}</span>
+                                    <h2 className="font-medium text-slate-900 text-lg line-clamp-2">{item.attributes.title}</h2>
+                                    <p className="text-slate-400 text-sm line-clamp-4">{item.attributes.description}</p>
 
-                        )}
+                                </motion.div>
+
+                            )}
+
+                        </Slider>
 
                     </div>
                 }
@@ -150,7 +194,7 @@ const Home = () => {
                                     <div className="md:ml-4 space-y-1">
                                         <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
                                         <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
-                                        <p className="text-slate-400 text-sm">{item.attributes.description}</p>
+                                        <p className="text-slate-400 text-sm line-clamp-3">{item.attributes.description}</p>
                                     </div>
                                 </motion.div>
 
