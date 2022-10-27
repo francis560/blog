@@ -45,7 +45,7 @@ const Article = () => {
 
         if (item.type === "header") {
             return (
-                <h1 className="font-bold text-slate-900 text-3xl">{item.data.text}</h1>
+                <h1 className="font-bold text-slate-900 text-xl md:text-3xl">{item.data.text}</h1>
             )
         }
 
@@ -57,7 +57,7 @@ const Article = () => {
 
         if (item.type === "image") {
             return (
-                <img className="rounded-md" src={item.data.file.url} />
+                <img className="rounded-md w-full object-cover" src={item.data.file.url} />
             )
         }
 
@@ -135,7 +135,7 @@ const Article = () => {
 
     return (
 
-        <div className="px-24">
+        <div className="px-4 md:px-12 lg:px-24">
 
             <Head>
                 <title>{post.attributes.title}</title>
@@ -150,7 +150,7 @@ const Article = () => {
                 loading ?
                     <PostLoading />
                     :
-                    <div className="px-28 mb-14">
+                    <div className="px-2 md:px-14 lg:px-28 mb-14">
                         <button onClick={() => router.push("/")} className="font-regular my-8 text-slate-400 text-sm hover:text-slate-300 flex items-center"><i className="fi fi-rr-arrow-small-left mr-2 inline-flex"></i>Regresar</button>
                         <span className="text-slate-400 font-regular text-sm mb-2">{moment(post.attributes.publishedAt).format('LL')}</span>
 
@@ -167,7 +167,7 @@ const Article = () => {
                     </div>
             }
 
-            <section className="my-14">
+            {/* <section className="my-14">
 
                 <p className="text-slate-900 font-bold text-base">More articles</p>
 
@@ -194,7 +194,7 @@ const Article = () => {
                         </div>
                 }
 
-            </section>
+            </section> */}
 
             <NewSletter />
 

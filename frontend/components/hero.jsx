@@ -51,7 +51,7 @@ const Hero = () => {
 
     return (
 
-        <header className="bg-slate-900 px-10 py-4 mt-6 rounded-md">
+        <header className="bg-slate-900 px-4 md:px-10 py-4 mt-6 rounded-md">
             <nav className="flex justify-between">
                 {/* <img src="" alt="" /> */}
                 <p className="font-extrabold text-white">Logo</p>
@@ -61,7 +61,7 @@ const Hero = () => {
 
             <hr className="my-4" />
 
-            <h1 className="font-extrabold text-white text-9xl">THE BLOG</h1>
+            <h1 className="font-extrabold text-white text-4xl md:text-9xl">THE BLOG</h1>
 
             <AnimatePresence>
                 {selectedId && (

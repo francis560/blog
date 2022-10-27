@@ -35,7 +35,6 @@ const Home = () => {
 
         axios.get("http://localhost:1337/api/posts?filters[editorPick][$eq]=true&sort[0]=title&sort[1]=description&populate=*").then(res => {
             setEditorPick(res.data.data);
-            console.log(res.data.data)
             setLoading2(false);
         });
 
@@ -50,7 +49,7 @@ const Home = () => {
 
     return (
 
-        <div className="px-24">
+        <div className="px-4 md:px-12 lg:px-24">
 
             <Head>
                 <title>The Blog</title>
@@ -65,10 +64,10 @@ const Home = () => {
                 loading ?
                     <HeroLoading />
                     :
-                    <motion.article whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 grid grid-cols-6 my-14">
-                        <img className="col-span-3 rounded-md w-96" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
+                    <motion.article whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 md:grid md:grid-cols-6 my-14">
+                        <img className="md:col-span-3 rounded-md w-96 object-cover" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
 
-                        <div className="col-span-3 px-10 my-auto">
+                        <div className="md:col-span-3 md:px-10 my-auto">
                             <span className="text-slate-400 font-regular text-sm">{moment(onePost?.attributes?.publishedAt).format('LL')}</span>
                             <h2 className="text-slate-900 font-bold my-2 text-xl">{onePost?.attributes?.title}</h2>
                             <p className="text-slate-500 font-regular text-base">{onePost?.attributes?.description}</p>
@@ -88,8 +87,8 @@ const Home = () => {
 
                             {latestPost.map((item, key) =>
 
-                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                                    <img className="rounded-md w-14" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex md:p-2">
+                                    <img className="rounded-md w-14 h-14 object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
 
                                     <div className="ml-4">
                                         <h2 className="font-medium text-slate-900 text-base">{item.attributes.title}</h2>
@@ -118,7 +117,7 @@ const Home = () => {
 
                             <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md space-y-4 hover:bg-slate-100 cursor-pointer flex flex-col p-2">
 
-                                <img className="rounded-md mx-auto" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <img className="rounded-md mx-auto object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
 
                                 <span className="text-slate-400 text-xs">{moment(item.attributes.publishedAt).format('LL')}</span>
                                 <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
@@ -141,14 +140,14 @@ const Home = () => {
                     loading3 ?
                         <MoreArticles />
                         :
-                        <div className="mt-6 flex flex-col space-y-4">
+                        <div className="mt-6 flex flex-col space-y-8 md:space-y-4">
 
                             {morePost.map((item, key) =>
 
-                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex p-2">
-                                    <img className="rounded-md w-40" src={item.attributes.cover?.data.attributes.url} alt="" />
+                                <motion.div key={key} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${item.id}`)} className="rounded-md hover:bg-slate-100 cursor-pointer flex flex-col md:flex-row md:p-2">
+                                    <img className="rounded-md w-full md:w-40 h-40 object-cover" src={item.attributes.cover?.data.attributes.url} alt="" />
 
-                                    <div className="ml-4 space-y-1">
+                                    <div className="md:ml-4 space-y-1">
                                         <span className="text-slate-400 text-sm">{moment(item.attributes.publishedAt).format('LL')}</span>
                                         <h2 className="font-medium text-slate-900 text-lg">{item.attributes.title}</h2>
                                         <p className="text-slate-400 text-sm">{item.attributes.description}</p>
