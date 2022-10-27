@@ -105,7 +105,7 @@ const Home = () => {
                     <HeroLoading />
                     :
                     <motion.article key={onePost.id} whileTap={{ scale: 0.9 }} onClick={() => router.push(`/article/${onePost.id}`)} className="cursor-pointer rounded-md p-6 bg-slate-100 md:grid md:grid-cols-6 my-14">
-                        <img className="md:col-span-3 rounded-md w-96 object-cover" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
+                        <img className="md:col-span-3 rounded-md w-full md:h-96 md:w-96 object-cover" src={onePost?.attributes?.cover.data.attributes.url} alt="" />
 
                         <div className="md:col-span-3 md:px-10 my-auto">
                             <span className="text-slate-400 font-regular text-sm">{moment(onePost?.attributes?.publishedAt).format('LL')}</span>
@@ -151,9 +151,9 @@ const Home = () => {
                     loading2 ?
                     <p>hola</p>
                     :
-                    <div className="mt-6">
+                    <div className="mt-6 grid grid-cols-4 gap-4">
                         
-                        <Slider {...settings}>
+                        {/* <Slider {...settings}> */}
 
                             {editorPick.map((item, key) =>
 
@@ -169,7 +169,7 @@ const Home = () => {
 
                             )}
 
-                        </Slider>
+                        {/* </Slider> */}
 
                     </div>
                 }
